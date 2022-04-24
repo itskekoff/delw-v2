@@ -2,7 +2,7 @@
 Новая версия бота HackerCom.
 
 
-Перед этим, вам нужно иметь (Python)[https://www.python.org/downloads/]
+Перед этим, вам нужно иметь [Python](https://www.python.org/downloads/)
 
 Настраиваем config.py под себя
 
