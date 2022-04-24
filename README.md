@@ -4,7 +4,7 @@
 
 Запускается легко.
 
-Перед этим, вам нужно иметь (пятон)[https://www.python.org/downloads/]
+Перед этим, вам нужно иметь [пятон](https://www.python.org/downloads/)
 
 Редактируем последнюю строчку, где bot.run("token"), меняем token на токен своего бота.
 Редактируем строку testingservers, она под bot = discord.Bot()
