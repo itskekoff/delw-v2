@@ -4,11 +4,10 @@
 
 Запускается легко.
 
-Перед этим, вам нужно иметь [пятон](https://www.python.org/downloads/)
+Перед этим, вам нужно иметь (Python)[https://www.python.org/downloads/]
 
-Редактируем последнюю строчку, где bot.run("token"), меняем token на токен своего бота.
-Редактируем строку testingservers, она под bot = discord.Bot()
-Меняем id на id своего сервера
+Настраиваем config.py под себя
+
 Приглашаем бота, используя это:
 
 <details>
@@ -16,7 +15,11 @@
   <img alt="Параметры" src="images/oauth2.png"/>
 </details>
 
+
+<details>
+  <summary>Запуск бота и установка нужных библиотек</summary>
 ```cmd
 pip install -r requirements.txt
 python bot.py
 ```
+</details>
