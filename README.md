@@ -11,7 +11,8 @@
 Меняем id на id своего сервера
 Приглашаем бота, используя это:
 
-![alt tag](f0652346.xsph.ru/oauth.png "Параметры OAuth2 для бота")​
+![Screenshot_3](https://user-images.githubusercontent.com/102914352/164986401-7e1af820-6e6e-4d10-841d-802e764c5589.png)
+
 
 ```cmd
 pip install -r requirements.txt
