@@ -18,8 +18,8 @@
 
 <details>
   <summary>Запуск бота и установка нужных библиотек</summary>
-```cmd
-pip install -r requirements.txt
-python bot.py
-```
+  ```cmd
+  pip install -r requirements.txt
+  python bot.py
+  ```
 </details>
