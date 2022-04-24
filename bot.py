@@ -27,7 +27,7 @@ async def on_ready():
         await asyncio.sleep(10.0)
         await bot.change_presence(activity=discord.Game(name=config.PRESENCE2))
 
-@bot.slash_command(guild_ids = testingservers, name = config.CREDITS, description = "Информация о создателе!")
+@bot.slash_command(guild_ids = testingservers, name = config.CREDITS, description = config.CREDITS_DESC)
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def credits(ctx):
     embed = discord.Embed(
@@ -35,13 +35,13 @@ async def credits(ctx):
         description=f'Надо проинформаровать {ctx.author.mention}!',
         color=discord.Colour.red()
     )
-    embed.add_field(name='➦ Создатель', value ='<@731428949665513572>', inline=False)
-    embed.add_field(name='➦ Кодер', value ='<@967316503651315782>', inline=False)
-    embed.add_field(name='➦ Создание', value ='Создна на Python, с кофейком и с любовью<3', inline=False)
-    embed.set_image(url='https://i.gifer.com/origin/e9/e9329b236da049a682773a98868ba2c1.gif')
+    embed.add_field(name='➦ Создатель', value=config.OWNER, inline=False)
+    embed.add_field(name='➦ Кодер', value=config.CODER, inline=False)
+    embed.add_field(name='➦ Создание', value=config.CREATED_WITH, inline=False)
+    embed.set_image(url=config.GIF)
     await ctx.respond(embed=embed)
 
-@bot.slash_command(guild_ids = testingservers, name = config.RELOAD, description = "Перезагрузка!")
+@bot.slash_command(guild_ids = testingservers, name = config.RELOAD, description = config.RELOAD_DESC)
 @commands.has_permissions(administrator=True)
 async def reload(ctx):
     try:
@@ -50,7 +50,7 @@ async def reload(ctx):
     except:
         await ctx.respond("Бот умер, перезапустите пожалуйта!")
 
-@bot.slash_command(guild_ids = testingservers, name = config.CLEAR, description = "Очистить сообщения!")
+@bot.slash_command(guild_ids = testingservers, name = config.CLEAR, description = config.CLEAR_DESC)
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, limit: int):
         await ctx.channel.purge(limit=limit)
@@ -58,7 +58,7 @@ async def clear(ctx, limit: int):
         await ctx.respond(embed=embed1, delete_after=10)
         await ctx.message.delete()
 
-@bot.slash_command(guild_ids = testingservers, name = config.ATTACK, description = "Атака сервера!")
+@bot.slash_command(guild_ids = testingservers, name = config.ATTACK, description = config.ATTACK_DESC)
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def attack(ctx, ip):
     def attack_start():
@@ -72,11 +72,11 @@ async def attack(ctx, ip):
         color=discord.Colour.red()
     )
     embed.add_field(name='Айпи сервера:', value="{}".format(ip), inline=False)
-    embed.set_image(url=f'https://c.tenor.com/-SV9TjUGabMAAAAM/hacker-python.gif')
+    embed.set_image(url=config.ATTACK_GIF)
     embed.set_footer(text="DDoS by " + botname)
     await ctx.respond(embed=embed)
 
-@bot.slash_command(guild_ids = testingservers, name = config.RESOLVE, description = "Узнать айпи сервера!")
+@bot.slash_command(guild_ids = testingservers, name = config.RESOLVE, description = config.RESOLVE_DESC)
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def resolve(ctx, server):
     url = "https://api.mcsrvstat.us/2/" + server
