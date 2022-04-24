@@ -32,7 +32,7 @@ async def on_ready():
 async def credits(ctx):
     embed = discord.Embed(
         title='Информация о создателе!',
-        description=f'Надо проинформаровать {ctx.author.mention}!',
+        description=f'Надо проинформировать {ctx.author.mention}!',
         color=discord.Colour.red()
     )
     embed.add_field(name='➦ Создатель', value=config.OWNER, inline=False)
