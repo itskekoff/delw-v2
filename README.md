@@ -13,7 +13,7 @@
 
 <details>
   <summary>Параметры OAuth2 для бота</summary>
-  <img alt="Параметры" src="f0652346.xsph.ru/oauth.png"/>
+  <img alt="Параметры" src="images/oauth2.png"/>
 </details>
 
 ```cmd
