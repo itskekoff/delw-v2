@@ -16,7 +16,7 @@
 </details>
 
 
-Запуск бота и установка нужных библиотек
+Установка библиотек и запуск бота:
   ```cmd
   pip install -r requirements.txt
   python bot.py
