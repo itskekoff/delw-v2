@@ -19,3 +19,5 @@
   pip install -r requirements.txt
   python bot.py
   ```
+
+Чтобы была последняя версия, скачивайте с вкладки Release самую последнюю версию
