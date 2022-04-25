@@ -8,10 +8,10 @@ import config
 
 from discord.ext import commands
 
-bot = discord.Bot() # для slash команд
+bot = discord.Bot()
 botname = config.BOT
 discordlink = config.DISCORD
-testingservers = config.GUILDS # мой тестовый сервер, поменяй на свой, можно выделить несколько, если их несколько.
+testingservers = config.GUILDS
 
 
 def attack_server(ip):
