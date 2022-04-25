@@ -1,8 +1,7 @@
 import discord
 import os
 import threading
-import urllib.request
-import json
+import requests
 import asyncio
 import config
 
@@ -102,29 +101,29 @@ async def attack(ctx, ip):
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def resolve(ctx, server):
     url = "https://api.mcsrvstat.us/2/" + server
-    file = urllib.request.urlopen(url)
-
-    for line in file:
-        decoded_line = line.decode("utf-8")
-
-    json_object = json.loads(decoded_line)
+    resp = requests.get(url)
+    data = resp.json()
 
     embed = discord.Embed(
         title="Решено!",
         color=discord.Colour.red()
     )
 
-    embed.add_field(name='Айпи:', value=json_object["ip"], inline=False)
-    embed.add_field(name='Порт:', value=json_object["port"], inline=False)
-    embed.add_field(name="Имя хоста", value=json_object["hostname"], inline=False)
-    embed.add_field(name="Версия:", value=json_object["version"], inline=False)
-    embed.add_field(name="Игроков:", value=json_object["players"], inline=False)
-    embed.add_field(name="Сервер онлайн:", value=json_object["online"], inline=False)
+    ip = data["ip"]
+    port = data["port"]
+    version = data["version"]
+    players = data["players"]['online']
+    hostname = data["hostname"]
+    online = str(data["online"]).replace("True", "Сервер включён").replace("False", "Сервер выключен")
 
-    g = json_object["ip"]
-    gb = json_object["port"]
-
-    embed.set_image(url=f'http://status.mclive.eu/{botname}/{g}/{gb}/banner.png')
+    embed.add_field(name='Айпи', value=ip, inline=True)
+    embed.add_field(name='Порт', value=port, inline=True)
+    embed.add_field(name="Имя хоста", value=hostname, inline=True)
+    embed.add_field(name="Версия", value=version, inline=True)
+    embed.add_field(name="Игроков", value=players, inline=True)
+    embed.add_field(name="Статус", value=online, inline=True)
+    
+    embed.set_image(url=f'http://status.mclive.eu/{botname}/{ip}/{port}/banner.png')
     embed.set_footer(text=botname)
     await ctx.respond(embed=embed)
 

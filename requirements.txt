@@ -1,1 +1,3 @@
+pycord
 discord.py
+requests
