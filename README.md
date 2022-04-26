@@ -15,6 +15,8 @@
 
 
 Установка библиотек и запуск бота:
+Если у вас Windows Server, то bot.py замените на bot_windows.py
+Если у вас Ubuntu или другой дистрибутив линукса - замените на bot_linux.py
   ```cmd
   pip install -r requirements.txt
   python bot.py
